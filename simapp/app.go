@@ -81,6 +81,7 @@ import (
 	"github.com/Finschia/finschia-sdk/x/mint"
 	mintkeeper "github.com/Finschia/finschia-sdk/x/mint/keeper"
 	minttypes "github.com/Finschia/finschia-sdk/x/mint/types"
+	ordamodule "github.com/Finschia/finschia-sdk/x/or/da"
 	ordakeeper "github.com/Finschia/finschia-sdk/x/or/da/keeper"
 	ordatypes "github.com/Finschia/finschia-sdk/x/or/da/types"
 	"github.com/Finschia/finschia-sdk/x/params"
@@ -148,8 +149,8 @@ var (
 		vesting.AppModuleBasic{},
 		tokenmodule.AppModuleBasic{},
 		collectionmodule.AppModuleBasic{},
+		ordamodule.AppModuleBasic{},
 		rollup.AppModuleBasic{},
-		//ordamodule.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -372,7 +373,7 @@ func NewSimApp(
 
 	/****  Rollup ****/
 	app.RollupKeeper = rollupkeeper.NewKeeper(appCodec, app.BankKeeper, app.AccountKeeper, keys[rolluptypes.StoreKey], keys[rolluptypes.MemStoreKey], app.GetSubspace(rolluptypes.ModuleName))
-	app.Ordakeeper = ordakeeper.NewKeeper(appCodec, keys[ordatypes.StoreKey], authtypes.NewModuleAddress(govtypes.ModuleName).String(), app.AccountKeeper, nil)
+	app.Ordakeeper = ordakeeper.NewKeeper(appCodec, keys[ordatypes.StoreKey], authtypes.NewModuleAddress(govtypes.ModuleName).String(), app.AccountKeeper, app.RollupKeeper)
 
 	/****  Module Options ****/
 
@@ -405,8 +406,8 @@ func NewSimApp(
 		tokenmodule.NewAppModule(appCodec, app.TokenKeeper),
 		collectionmodule.NewAppModule(appCodec, app.CollectionKeeper),
 		authzmodule.NewAppModule(appCodec, app.AuthzKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
+		ordamodule.NewAppModule(appCodec, app.Ordakeeper, app.AccountKeeper),
 		rollup.NewAppModule(appCodec, app.RollupKeeper, app.AccountKeeper, app.BankKeeper),
-		//ordamodule.NewAppModule(appCodec, app.Ordakeeper, app.AccountKeeper),
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that

@@ -9,7 +9,7 @@ import (
 
 	types "github.com/Finschia/finschia-sdk/types"
 	types0 "github.com/Finschia/finschia-sdk/x/auth/types"
-	types1 "github.com/Finschia/finschia-sdk/x/or/da/types"
+	types1 "github.com/Finschia/finschia-sdk/x/or/rollup/types"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -87,17 +87,17 @@ func (mr *MockRollupKeeperMockRecorder) GetRegisteredRollups(ctx interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRegisteredRollups", reflect.TypeOf((*MockRollupKeeper)(nil).GetRegisteredRollups), ctx)
 }
 
-// GetRollupInfo mocks base method.
-func (m *MockRollupKeeper) GetRollupInfo(ctx types.Context, rollupID string) (types1.RollupInfo, error) {
+// GetRollup mocks base method.
+func (m *MockRollupKeeper) GetRollup(ctx types.Context, name string) (types1.Rollup, bool) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetRollupInfo", ctx, rollupID)
-	ret0, _ := ret[0].(types1.RollupInfo)
-	ret1, _ := ret[1].(error)
+	ret := m.ctrl.Call(m, "GetRollup", ctx, name)
+	ret0, _ := ret[0].(types1.Rollup)
+	ret1, _ := ret[1].(bool)
 	return ret0, ret1
 }
 
-// GetRollupInfo indicates an expected call of GetRollupInfo.
-func (mr *MockRollupKeeperMockRecorder) GetRollupInfo(ctx, rollupID interface{}) *gomock.Call {
+// GetRollup indicates an expected call of GetRollup.
+func (mr *MockRollupKeeperMockRecorder) GetRollup(ctx, name interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRollupInfo", reflect.TypeOf((*MockRollupKeeper)(nil).GetRollupInfo), ctx, rollupID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRollup", reflect.TypeOf((*MockRollupKeeper)(nil).GetRollup), ctx, name)
 }
