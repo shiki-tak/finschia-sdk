@@ -1,4 +1,4 @@
-package simapp
+package l2app
 
 import (
 	"encoding/json"
@@ -15,7 +15,7 @@ import (
 	"github.com/Finschia/ostracon/libs/log"
 
 	"github.com/Finschia/finschia-rdk/baseapp"
-	"github.com/Finschia/finschia-rdk/simapp/helpers"
+	"github.com/Finschia/finschia-rdk/l2app/helpers"
 	"github.com/Finschia/finschia-rdk/store"
 	"github.com/Finschia/finschia-rdk/store/cache"
 	sdk "github.com/Finschia/finschia-sdk/types"

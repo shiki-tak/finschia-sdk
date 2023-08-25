@@ -13,9 +13,9 @@ import (
 	"github.com/Finschia/finschia-rdk/x/genutil"
 	"github.com/Finschia/finschia-rdk/x/genutil/types"
 	"github.com/Finschia/finschia-sdk/crypto/keys/secp256k1"
-	"github.com/Finschia/finschia-sdk/simapp"
-	"github.com/Finschia/finschia-sdk/simapp/helpers"
-	simappparams "github.com/Finschia/finschia-sdk/simapp/params"
+	"github.com/Finschia/finschia-sdk/l2app"
+	"github.com/Finschia/finschia-sdk/l2app/helpers"
+	simappparams "github.com/Finschia/finschia-sdk/l2app/params"
 	sdk "github.com/Finschia/finschia-sdk/types"
 	banktypes "github.com/Finschia/finschia-sdk/x/bank/types"
 	"github.com/Finschia/finschia-sdk/x/staking"
@@ -38,7 +38,7 @@ type GenTxTestSuite struct {
 	suite.Suite
 
 	ctx            sdk.Context
-	app            *simapp.SimApp
+	app            *l2app.SimApp
 	encodingConfig simappparams.EncodingConfig
 
 	msg1, msg2 *stakingtypes.MsgCreateValidator
@@ -46,10 +46,10 @@ type GenTxTestSuite struct {
 
 func (suite *GenTxTestSuite) SetupTest() {
 	checkTx := false
-	app := simapp.Setup(checkTx)
+	app := l2app.Setup(checkTx)
 	suite.ctx = app.BaseApp.NewContext(checkTx, tmproto.Header{})
 	suite.app = app
-	suite.encodingConfig = simapp.MakeTestEncodingConfig()
+	suite.encodingConfig = l2app.MakeTestEncodingConfig()
 
 	var err error
 	amount := sdk.NewInt64Coin(sdk.DefaultBondDenom, 50)
@@ -66,7 +66,7 @@ func (suite *GenTxTestSuite) setAccountBalance(addr sdk.AccAddress, amount int64
 	acc := suite.app.AccountKeeper.NewAccountWithAddress(suite.ctx, addr)
 	suite.app.AccountKeeper.SetAccount(suite.ctx, acc)
 
-	err := simapp.FundAccount(suite.app, suite.ctx, addr, sdk.Coins{sdk.NewInt64Coin(sdk.DefaultBondDenom, amount)})
+	err := l2app.FundAccount(suite.app, suite.ctx, addr, sdk.Coins{sdk.NewInt64Coin(sdk.DefaultBondDenom, amount)})
 	suite.Require().NoError(err)
 
 	bankGenesisState := suite.app.BankKeeper.ExportGenesis(suite.ctx)

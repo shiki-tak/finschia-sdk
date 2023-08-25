@@ -10,7 +10,7 @@ import (
 	"github.com/Finschia/finschia-rdk/x/genutil/types"
 	"github.com/Finschia/finschia-sdk/codec"
 	"github.com/Finschia/finschia-sdk/crypto/keys/ed25519"
-	"github.com/Finschia/finschia-sdk/simapp"
+	"github.com/Finschia/finschia-sdk/l2app"
 	sdk "github.com/Finschia/finschia-sdk/types"
 	banktypes "github.com/Finschia/finschia-sdk/x/bank/types"
 	stakingtypes "github.com/Finschia/finschia-sdk/x/staking/types"
@@ -45,14 +45,14 @@ func TestValidateGenesisMultipleMessages(t *testing.T) {
 		sdk.NewInt64Coin(sdk.DefaultBondDenom, 50), desc, comm, sdk.OneInt())
 	require.NoError(t, err)
 
-	txGen := simapp.MakeTestEncodingConfig().TxConfig
+	txGen := l2app.MakeTestEncodingConfig().TxConfig
 	txBuilder := txGen.NewTxBuilder()
 	require.NoError(t, txBuilder.SetMsgs(msg1, msg2))
 
 	tx := txBuilder.GetTx()
 	genesisState := types.NewGenesisStateFromTx(txGen.TxJSONEncoder(), []sdk.Tx{tx})
 
-	err = types.ValidateGenesis(genesisState, simapp.MakeTestEncodingConfig().TxConfig.TxJSONDecoder())
+	err = types.ValidateGenesis(genesisState, l2app.MakeTestEncodingConfig().TxConfig.TxJSONDecoder())
 	require.Error(t, err)
 }
 
@@ -61,7 +61,7 @@ func TestValidateGenesisBadMessage(t *testing.T) {
 
 	msg1 := stakingtypes.NewMsgEditValidator(sdk.ValAddress(pk1.Address()), desc, nil, nil)
 
-	txGen := simapp.MakeTestEncodingConfig().TxConfig
+	txGen := l2app.MakeTestEncodingConfig().TxConfig
 	txBuilder := txGen.NewTxBuilder()
 	err := txBuilder.SetMsgs(msg1)
 	require.NoError(t, err)
@@ -69,7 +69,7 @@ func TestValidateGenesisBadMessage(t *testing.T) {
 	tx := txBuilder.GetTx()
 	genesisState := types.NewGenesisStateFromTx(txGen.TxJSONEncoder(), []sdk.Tx{tx})
 
-	err = types.ValidateGenesis(genesisState, simapp.MakeTestEncodingConfig().TxConfig.TxJSONDecoder())
+	err = types.ValidateGenesis(genesisState, l2app.MakeTestEncodingConfig().TxConfig.TxJSONDecoder())
 	require.Error(t, err)
 }
 
